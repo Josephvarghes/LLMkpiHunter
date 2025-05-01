@@ -45,3 +45,20 @@ flowchart TD
     B --> C[Raw HTML/Text]
     C --> D[GPT-4 Analysis]
     D --> E[Structured JSON Output]
+
+## How to run 
+
+# CSV Processing Project
+
+## ✅ How to Run This Project
+
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd <project-folder> 
+
+## Manually Create the Following Folders (Required)
+
+cleaned_category
+filtered_exports
+Final_Data
