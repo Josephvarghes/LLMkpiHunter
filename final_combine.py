@@ -35,9 +35,3 @@ def combine_and_deduplicate_csv(folder_path, output_file):
     except Exception as e:
         print(f"Error occurred: {e}")
 
-if __name__ == "__main__":
-# Example usage
-    combine_and_deduplicate_csv(
-        folder_path="\Final_Data",
-        output_file="CFinal_Data\FMCG_India_0-250.csv"
-    )

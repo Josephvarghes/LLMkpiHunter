@@ -182,5 +182,5 @@ if __name__ == "__main__":
     
     combine_and_deduplicate_csv(
     folder_path="Final_Data",
-    output_file="Final_Data\FMCG_India_0-250.csv" #change name for each country (e.g. FMCG_India_0-250.csv, FMCG_Germany_0-100.csv, etc.
+    output_file="Final_Data/FMCG_India_250.csv" #change name for each country (e.g. FMCG_India_0-250.csv, FMCG_Germany_0-100.csv, etc.
     )
