@@ -47,7 +47,7 @@ flowchart TD
     D --> E[Structured JSON Output]
 ```
 ## How to run 
-
+run get_links.py -> then main.py
 # CSV Processing Project
 
 ## ✅ How to Run This Project
