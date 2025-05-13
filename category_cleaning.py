@@ -9,7 +9,7 @@ from manual_clean import clean_csv
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-INPUT_CSV = "filtered_exports"
+INPUT_CSV = r"C:\Users\user\OneDrive\Desktop\Crawl4AI\LLMkpiHunter\filtered_exports\India_1-120 links"
 OUTPUT_CSV = "cleaned_category"
 
 def build_prompt(source_url, insight, year):
@@ -19,20 +19,24 @@ You are an expert FMCG analyst. Given the following raw insight text:
 
 Source URL: "{source_url}"
 Insight: "{insight}"
-Year: {year}
+Year: "{year}"
 
-Extract and format the structured data in this exact JSON format:
+Your task is to extract and return structured data in the following exact JSON format. Generate a concise summary based on the Insight.
 
 {{
-  "Brand": "The brand name mentioned (if any)",
-  "Metric": "What is being measured (e.g., turnover, sales, growth, strictly cleaned)",
-  "Value": "Mentioned value or milestone (if any,strictly cleaned, must be numeric)",
-  "Country": "Mentioned region or country, or 'India' if implied, else null",
-  "Year": "{year}(strictly clenaned(eg: 2023))",
-  "Source URLl": "{source_url}",
+  "Source URL": "{source_url}",
+  "Insight": "{insight}",
+  "Summary": "A concise, clear summary generated from the Insight",
+  "Year": "{year} (strictly cleaned, e.g., '2023' or 'FY23')",
+  "Brand": "Brand name mentioned (if any)",
+  "Metric": "What is being measured (e.g., sales revenue, market share, inventory level — cleaned)",
+  "Metric Category": "The broader KPI category this metric falls under",
+  "Value": "Mentioned value (strictly numeric or numeric + % if applicable)",
+  "Unit": "Unit of measurement (e.g., USD, INR, EUR, '%', 'units')",
+  "Country": "Mentioned country/region, or 'Germany' if implied, else null"
 }}
 
-Return only valid JSON. No extra text or markdown.
+❗Return only valid JSON. No markdown, no explanation, no headings — only JSON.
 """
 
 def extract_structured_data(source_url, insight_text, year):
@@ -66,7 +70,7 @@ def process_csv():
                  open(output_file_path, mode='w', newline='', encoding='utf-8') as outfile:
 
                 reader = csv.DictReader(infile)
-                fieldnames = ["Country", "Year", "Brand", "Metric", "Value", "Source URL"]
+                fieldnames = ["Source URL", "Insight", "Summary", "Year", "Brand", "Metric", "Metric Category", "Value","Unit", "Country"]
                 writer = csv.DictWriter(outfile, fieldnames=fieldnames)
                 writer.writeheader()
 
@@ -80,12 +84,16 @@ def process_csv():
 
                     if structured:
                         writer.writerow({
-                            "Source URL": source_url,
-                            "Year": row["Year"],
+                            "Source URL": structured.get("Source URL", ""),
+                            "Insight": structured.get("Insight", ""),
+                            "Summary": structured.get("Summary", ""),
+                            "Year": structured.get("Year", ""),
                             "Brand": structured.get("Brand", ""),
                             "Metric": structured.get("Metric", ""),
-                            "Value": structured.get("Value", ""),
-                            "Country": structured.get("Country", ""),
+                            "Metric Category": structured.get("Metric Category", ""),
+                            "Value": structured.get("Value", ""), 
+                            "Unit": structured.get("Unit", ""),
+                            "Country": structured.get("Country", "")
                         })
                         print(f"[INFO] Successfully processed row {row_count} in {filename}.")
                     else:
